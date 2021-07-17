@@ -3,7 +3,6 @@ package rest
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/gorilla/mux"
 	"github.com/pkg/errors"
 	"log"
 	"net/http"
@@ -36,14 +35,14 @@ func init() {
 
 type ResponseWrapper struct {
 	Status    int         `json:"status"`
-	RequestId RequestId   `json:request_id`
+	RequestId string      `json:request_id`
 	Version   string      `json:"version,omitempty"`
 	Data      interface{} `json:"data,omitempty"`
 	Error     string      `json:"error,omitempty"`
 	Hostname  string      `json:"host"`
 }
 
-func NewResponseWrapperWithVersion(requestId RequestId, version string) ResponseWrapper {
+func NewResponseWrapperWithVersion(requestId string, version string) ResponseWrapper {
 	return ResponseWrapper{
 		Status:    http.StatusOK,
 		RequestId: requestId,
@@ -52,7 +51,7 @@ func NewResponseWrapperWithVersion(requestId RequestId, version string) Response
 	}
 }
 
-func NewResponseWrapperWithError(requestId RequestId, err error) ResponseWrapper {
+func NewResponseWrapperWithError(requestId string, err error) ResponseWrapper {
 	return ResponseWrapper{
 		Status:    http.StatusNotFound,
 		RequestId: requestId,
@@ -61,7 +60,7 @@ func NewResponseWrapperWithError(requestId RequestId, err error) ResponseWrapper
 	}
 }
 
-func NewResponseWrapper(requestId RequestId) ResponseWrapper {
+func NewResponseWrapper(requestId string) ResponseWrapper {
 	return ResponseWrapper{
 		Status:    http.StatusOK,
 		RequestId: requestId,
@@ -69,7 +68,7 @@ func NewResponseWrapper(requestId RequestId) ResponseWrapper {
 	}
 }
 
-func NewResponseWrapperWithInternalError(requestId RequestId, err error) ResponseWrapper {
+func NewResponseWrapperWithInternalError(requestId string, err error) ResponseWrapper {
 	return ResponseWrapper{
 		Status:    http.StatusInternalServerError,
 		RequestId: requestId,
